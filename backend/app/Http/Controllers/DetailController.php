@@ -12,15 +12,7 @@ class DetailController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(Detail::all());
     }
 
     /**
@@ -28,38 +20,55 @@ class DetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'address' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $data = Detail::create($validated);
+        return response([
+            'data' => $data,
+            'message' => 'User created Successfully'
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Detail $detail)
+    public function show(Detail $detail, String $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Detail $detail)
-    {
-        //
+        $data = Detail::findOrFail($id);
+        return response()->json([
+            'data' => $data,
+            'message' => 'User fetched successfully'
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Detail $detail)
+    public function update(Request $request, String $id)
     {
-        //
+        $data = Detail::findOrFail($id);
+        $data->update($request->all());
+
+        return response()->json([
+            'data' => $data,
+            'message' => 'User Updated successfully',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Detail $detail)
+    public function destroy(Detail $detail, String $id)
     {
-        //
+        $data = Detail::findOrFail($id);
+        $data->delete();
+        return response()->json([
+            'message' => 'User Deleted successfully'
+        ]);
     }
 }

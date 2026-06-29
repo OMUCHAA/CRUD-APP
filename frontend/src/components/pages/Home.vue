@@ -18,61 +18,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-slate-50 border-b border-default">
+          <tr
+            v-for="detail in details"
+            v-bind:key="detail.id"
+            class="bg-slate-50 border-b border-default"
+          >
             <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-              User1
+              {{ detail.name }}
             </th>
-            <td class="px-6 py-4">user@gmail.com</td>
-            <td class="px-6 py-4">Address1</td>
-            <td class="px-6 py-4">12345678</td>
-            <td class="px-6 py-4">
-              <button class="text-white font-semibold rounded py-2 px-4 bg-green-950">
-                EDIT
-              </button>
-              <button class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800">
-                DELETE
-              </button>
-            </td>
-          </tr>
-          <tr class="bg-slate-50 border-b border-default">
-            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-              User2
-            </th>
-            <td class="px-6 py-4">user2@gmail.com</td>
-            <td class="px-6 py-4">Address2</td>
-            <td class="px-6 py-4">12345678</td>
-            <td class="px-6 py-4">
-              <button class="text-white font-semibold rounded py-2 px-4 bg-green-950">
-                EDIT
-              </button>
-              <button class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800">
-                DELETE
-              </button>
-            </td>
-          </tr>
-          <tr class="bg-slate-50 border-b border-default">
-            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-              User3
-            </th>
-            <td class="px-6 py-4">user3@gmail.com</td>
-            <td class="px-6 py-4">Address3</td>
-            <td class="px-6 py-4">12345678</td>
-            <td class="px-6 py-4">
-              <button class="text-white font-semibold rounded py-2 px-4 bg-green-950">
-                EDIT
-              </button>
-              <button class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800">
-                DELETE
-              </button>
-            </td>
-          </tr>
-          <tr class="bg-slate-50 border-b border-default">
-            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-              User4
-            </th>
-            <td class="px-6 py-4">user4@gmail.com</td>
-            <td class="px-6 py-4">Address4</td>
-            <td class="px-6 py-4">12345678</td>
+            <td class="px-6 py-4">{{ detail.email }}</td>
+            <td class="px-6 py-4">{{ detail.address }}</td>
+            <td class="px-6 py-4">{{ detail.phone }}</td>
             <td class="px-6 py-4">
               <button class="text-white font-semibold rounded py-2 px-4 bg-green-950">
                 EDIT
@@ -88,5 +44,19 @@
   </MainLayout>
 </template>
 <script setup>
+import { onMounted, ref } from "vue";
 import MainLayout from "../MainLayout.vue";
+import axiosClient from "../../axios.js";
+
+const details = ref([]);
+//Fetching when the page is loaded
+onMounted(async () => {
+  try {
+    const response = await axiosClient.get("/api/details");
+    console.log(response.data);
+    details.value = response.data;
+  } catch (error) {
+    console.log(error.response.message);
+  }
+});
 </script>

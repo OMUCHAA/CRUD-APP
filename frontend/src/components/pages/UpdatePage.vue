@@ -2,10 +2,13 @@
   <MainLayout>
     <div class="flex flex-col items-center mt-5">
       <h1 class="text-3xl font-semibold text-white">Update User</h1>
+      <p class="text-white bg-green-600 text-sm rounded py-1 px-2" v-if="successMessage">
+        {{ successMessage }}
+      </p>
     </div>
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8">
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit.prevent="updateUser">
           <div>
             <label for="name" class="block text-sm/6 font-medium text-gray-100"
               >Name</label
@@ -88,10 +91,13 @@ import { useRoute } from "vue-router";
 import MainLayout from "../MainLayout.vue";
 import { onMounted, ref } from "vue";
 import axiosClient from "../../axios.js";
+import router from "../../router.js";
 
 const route = useRoute();
 
 const id = route.params.id;
+
+const successMessage = ref(false);
 
 const userDetails = ref({
   name: "",
@@ -108,4 +114,17 @@ onMounted(async () => {
     console.log(error.response);
   }
 });
+
+async function updateUser() {
+  try {
+    const response = await axiosClient.put(`/api/details/${id}`, userDetails.value);
+    console.log(response.data.message);
+    successMessage.value = response.data.message;
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+  } catch (error) {
+    console.log(error.response);
+  }
+}
 </script>

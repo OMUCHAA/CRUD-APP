@@ -6,7 +6,7 @@ import UpdatePage from './components/pages/UpdatePage.vue'
 const routes = [
     {name: 'Home', component: Home, path: '/'},
     {name: 'CreatePage', component: CreatePage, path: '/create'},
-    {name: 'UpdatePage', component: UpdatePage, path: '/update'}
+    {name: 'UpdatePage', component: UpdatePage, path: '/update/:id'}
 ]
 
 const router = createRouter({

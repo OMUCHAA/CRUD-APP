@@ -37,7 +37,7 @@ class DetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Detail $detail, String $id)
+    public function show(String $id)
     {
         $data = Detail::findOrFail($id);
         return response()->json([

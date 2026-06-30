@@ -30,9 +30,12 @@
             <td class="px-6 py-4">{{ detail.address }}</td>
             <td class="px-6 py-4">{{ detail.phone }}</td>
             <td class="px-6 py-4">
-              <button class="text-white font-semibold rounded py-2 px-4 bg-green-950">
+              <router-link
+                :to="`/update/${detail.id}`"
+                class="text-white font-semibold rounded py-2 px-4 bg-green-950"
+              >
                 EDIT
-              </button>
+              </router-link>
               <button class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800">
                 DELETE
               </button>

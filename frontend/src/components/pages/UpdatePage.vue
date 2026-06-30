@@ -12,6 +12,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="userDetails.name"
                 type="text"
                 name="name"
                 id="name"
@@ -26,6 +27,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="userDetails.email"
                 type="email"
                 name="email"
                 id="email"
@@ -40,6 +42,7 @@
             >
             <div class="mt-2">
               <input
+                v-model="userDetails.address"
                 type="text"
                 name="address"
                 id="address"
@@ -57,6 +60,7 @@
             </div>
             <div class="mt-2">
               <input
+                v-model="userDetails.phone"
                 type="text"
                 name="phone"
                 id="phone"
@@ -80,5 +84,28 @@
   </MainLayout>
 </template>
 <script setup>
+import { useRoute } from "vue-router";
 import MainLayout from "../MainLayout.vue";
+import { onMounted, ref } from "vue";
+import axiosClient from "../../axios.js";
+
+const route = useRoute();
+
+const id = route.params.id;
+
+const userDetails = ref({
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+});
+onMounted(async () => {
+  try {
+    const response = await axiosClient.get(`/api/details/${id}`);
+    console.log(response.data.data);
+    userDetails.value = response.data.data;
+  } catch (error) {
+    console.log(error.response);
+  }
+});
 </script>

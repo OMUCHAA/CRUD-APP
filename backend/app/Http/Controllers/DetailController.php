@@ -63,7 +63,7 @@ class DetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Detail $detail, String $id)
+    public function destroy(String $id)
     {
         $data = Detail::findOrFail($id);
         $data->delete();

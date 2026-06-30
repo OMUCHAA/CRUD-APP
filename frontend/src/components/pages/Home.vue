@@ -1,6 +1,9 @@
 <template>
   <MainLayout>
     <h1 class="text-white text-2xl font-bold text-center mt-4">Available Users</h1>
+    <p class="text-white bg-green-600 text-sm rounded py-1 px-2" v-if="successMessage">
+      {{ successMessage }}
+    </p>
     <div
       class="relative mt-8 overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default"
     >
@@ -36,7 +39,10 @@
               >
                 EDIT
               </router-link>
-              <button class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800">
+              <button
+                @click="deleteUser(detail.id)"
+                class="text-white font-semibold mr-3 rounded py-2 px-4 bg-red-800"
+              >
                 DELETE
               </button>
             </td>
@@ -62,4 +68,20 @@ onMounted(async () => {
     console.log(error.response.message);
   }
 });
+
+const successMessage = ref(false);
+async function deleteUser(id) {
+  try {
+    const response = await axiosClient.delete(`/api/details/${id}`);
+    console.log(response.data);
+    successMessage.value = response.data.message;
+    setTimeout(() => {
+      successMessage.value = "";
+    }, 2000);
+    const userRes = await axiosClient.get("/api/details");
+    details.value = userRes.data;
+  } catch (error) {
+    console.log(error.response);
+  }
+}
 </script>
